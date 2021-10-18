@@ -1,5 +1,5 @@
 class Solution:
-    def removeDuplicates(self, nums) -> int:
+    def removeDuplicates1(self, nums) -> int:
         start = 0
         end = len(nums)-1
         while start < end:
@@ -13,7 +13,16 @@ class Solution:
             elif nums[start] != nums[j]:
                 start += 1
         return end + 1
-
+    
+    def removeDuplicates(self, nums) -> int:
+        if not nums:
+            return 0
+        last = 0
+        for num in nums:
+            if num > nums[last]:
+                last+=1
+                nums[last] = num
+        return last + 1
 
 if __name__ == "__main__":
     s = Solution()
