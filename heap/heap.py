@@ -31,9 +31,11 @@ def heapify_delete(root, idx, heap_type):
     right_child = 2*idx+1
     swap_child = -1
     
+    # Check if root has no children
     if root.heap_size < left_child:
         return
 
+    # Check for one child
     elif root.heap_size == left_child:
         if heap_type == "min":
             if (root.custom_list[idx] > root.custom_list[left_child]):
@@ -44,6 +46,7 @@ def heapify_delete(root, idx, heap_type):
                 root.custom_list[idx], root.custom_list[left_child] = root.custom_list[left_child], root.custom_list[idx]
                 return
     
+    # Check for both children
     else:
         if heap_type == "min":
             if (root.custom_list[left_child] < root.custom_list[right_child]):
@@ -72,6 +75,7 @@ def extract_node(root, heap_type):
     if root.heap_size == 0:
         return "No nodes to extract, heap is empty"
     extracted_node = root.custom_list[1]
+    # Swap first and last element in heap
     root.custom_list[1], root.custom_list[root.heap_size+1] = root.custom_list[root.heap_size+1], None
     root.heap_size-=1
     heapify_delete(root, 1, heap_type) 
