@@ -1,5 +1,7 @@
 from enum import Enum
+from collections import namedtuple
 
+Edge = namedtuple("Edge", "to weight")
 class State(Enum):
     unvisited, visited, visiting = 1, 2, 3
 
@@ -38,36 +40,7 @@ class GraphDict:
             g=g+f"{self.vertices[vertex]}\n"
         return g
 
-def acyclic_graph():
-    g = GraphDict()
-    #       A
-    #     /    \
-    #    B      C
-    #  /   \    /
-    # D    E   F
-    g.add_edge('A', 'B', 3)
-    g.add_edge('A', 'C', 3)
-    g.add_edge('B', 'D', 3)
-    g.add_edge('B', 'E', 3)
-    g.add_edge('C', 'F', 3)
 
-    return g
-
-def connected_component():
-    g = GraphDict()
-    #       A
-    #     /    \
-    #    B      C
-    #  /   \    /
-    # D    E   F
-    g.add_edge('A', 'B', 3)
-    g.add_edge('A', 'C', 3)
-    g.add_edge('B', 'D', 3)
-    g.add_edge('B', 'E', 3)
-    g.add_edge('C', 'F', 3)
-    g.add_edge('G', 'G', 0)
-    g.add_edge('H', 'H', 0)
-    return g
 
 # Class representing a simple graph using an edge list converted to adjacency list
 class GraphList:
@@ -95,6 +68,71 @@ class GraphList:
             g_view=g_view+'\n'
         return g_view   
  
+class GraphListTuple:
+    def __init__(self, vertices, edge_list=[]):
+        self.vertices = vertices
+        self.adjacency_list = [[] for _ in range(self.vertices)]
+
+        if edge_list:
+            for origin, des, distance in edge_list:
+                edge = Edge(des, distance)
+                self.adjacency_list[origin].append(edge)
+
+    # def add_edge(self, src, destination, weight):
+    #     self.adjacency_list[src].append({destination:weight})
+
+    def __str__(self):
+        g_view = ""
+        for origin in range(len(self.adjacency_list)):
+        # print current vertex and all its neighboring vertices
+            for edge in self.adjacency_list[origin]:
+                g_view=g_view+ f'{origin} ---{edge.weight}--—> {edge.to} '
+            g_view=g_view+'\n'
+        return g_view  
+    
+
+def acyclic_graph():
+    g = GraphDict()
+    #       A
+    #     /    \
+    #    B      C
+    #  /   \    /
+    # D    E   F
+    g.add_edge('A', 'B', 3)
+    g.add_edge('A', 'C', 3)
+    g.add_edge('B', 'D', 3)
+    g.add_edge('B', 'E', 3)
+    g.add_edge('C', 'F', 3)
+
+    return g
+
+def acyclic_graph_from_graph_list():
+    #       0
+    #     /    \
+    #    1      2
+    #  /   \    /
+    # 3    4   5
+    edge_list = [(0, 1), (0, 2), (1, 3), (1, 4), (2, 5)]
+    num_of_nodes = 6
+    graph = GraphList(num_of_nodes, edge_list) 
+    return graph
+
+def connected_component():
+    g = GraphDict()
+    #       A
+    #     /    \
+    #    B      C
+    #  /   \    /
+    # D    E   F
+    g.add_edge('A', 'B', 3)
+    g.add_edge('A', 'C', 3)
+    g.add_edge('B', 'D', 3)
+    g.add_edge('B', 'E', 3)
+    g.add_edge('C', 'F', 3)
+    g.add_edge('G', 'G', 0)
+    g.add_edge('H', 'H', 0)
+    return g
+
  
 def graph_bfs():
     # Set up an edge list and number of nodes
@@ -105,3 +143,12 @@ def graph_bfs():
     graph.add_edge(3,4)
     return graph
 
+def single_source_shortest_path():
+    edge_list = [(0,1,3), (0,2,2), (0,5,3), (1,3,1), (1,2,6), (2,3,1),
+                 (2,4,10), (3,4,5), (5,4,7)]
+
+    num_of_nodes = 7
+    g = GraphListTuple(num_of_nodes, edge_list)
+    return g
+
+# print(single_source_shortest_path())
