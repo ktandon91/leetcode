@@ -16,3 +16,6 @@ class Solution(object):
             else:
                 ans.append(str(new_n))
         return ans
+
+
+print(None and None.left)
